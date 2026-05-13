@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic QR Code</title>
+
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    #qrcode {
+      margin: 20px auto;
+    }
+
+    #data {
+      font-size: 18px;
+      color: #333;
+      margin-top: 15px;
+    }
+
+    #timer {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Dynamic QR Code</h1>
+
+    <center><div id="qrcode"></div></center>
+
+    <div id="data"></div>
+
+    <p>QR changes every <span id="timer">5</span> seconds</p>
+  </div>
+
+  <script>
+    let qr;
+    let countdown = 5;
+
+    function generateQRCode() {
+
+      // Generate dynamic data using current time
+      let dynamicData = "QR-" + new Date().toLocaleTimeString();
+
+      // Clear old QR code
+      document.getElementById("qrcode").innerHTML = "";
+
+      // Create new QR code
+      qr = new QRCode(document.getElementById("qrcode"), {
+        text: dynamicData,
+        width: 200,
+        height: 200
+      });
+
+      // Display current QR data
+      document.getElementById("data").innerHTML =
+        "Current Data: <b>" + dynamicData + "</b>";
+
+      // Reset timer
+      countdown = 5;
+    }
+
+    // Initial QR generation
+    generateQRCode();
+
+    // Change QR every 5 seconds
+    setInterval(generateQRCode, 5000);
+
+    // Countdown timer display
+    setInterval(() => {
+      countdown--;
+
+      if (countdown < 0) {
+        countdown = 5;
+      }
+
+      document.getElementById("timer").innerText = countdown;
+    }, 1000);
+
+  </script>
+
+</body>
+</html>
